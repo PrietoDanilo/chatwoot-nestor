@@ -1,0 +1,15 @@
+# nixpacks.toml (colocado en la raíz del repositorio)
+
+# Define variables de entorno que estarán disponibles durante
+# las fases de build y también en la imagen final.
+[variables]
+RAILS_ENV = "production"
+# Proporciona una clave secreta dummy necesaria para assets:precompile
+SECRET_KEY_BASE = "dummy_secret_key_base_for_build_needs_to_be_set_real_in_railway_runtime"
+# Asegura que los logs vayan a la consola si es necesario
+RAILS_LOG_TO_STDOUT = "enabled"
+
+# Opcional: Si el comando start por defecto de Nixpacks no funciona,
+# puedes descomentar y ajustar esto. El comando por defecto para Rails suele ser correcto.
+# [start]
+# cmd = "bundle exec rails server -b 0.0.0.0 -p $PORT"
