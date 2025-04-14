@@ -62,11 +62,22 @@ COPY . /app
 # https://github.com/chatwoot/chatwoot/issues/701
 RUN mkdir -p /app/log
 
-# generate production assets if production environment
+# ----- INICIO DEL NUEVO BLOQUE (CON DEBUG) -----
 RUN if [ "$RAILS_ENV" = "production" ]; then \
-  RAILS_ENV=production SECRET_KEY_BASE=precompile_placeholder RAILS_LOG_TO_STDOUT=enabled bundle exec rake assets:precompile \
-  && rm -rf spec node_modules tmp/cache; \
+  echo "DEBUG: Checking environment inside RUN command block..."; \
+  echo "DEBUG: Value of RAILS_ENV variable: [$RAILS_ENV]"; \
+  echo "DEBUG: All environment variables available:"; \
+  printenv | sort; \
+  echo "DEBUG: --- End of environment variables ---"; \
+  echo "DEBUG: Executing rake assets:precompile with explicit RAILS_ENV=production and --trace..."; \
+  RAILS_ENV=production SECRET_KEY_BASE=precompile_placeholder RAILS_LOG_TO_STDOUT=enabled bundle exec rake assets:precompile --trace; \
+  echo "DEBUG: Rake assets:precompile finished. Removing temporary files..."; \
+  rm -rf spec node_modules tmp/cache; \
+  echo "DEBUG: Temporary files removed."; \
+  else \
+  echo "DEBUG: RAILS_ENV is NOT production (Value: [$RAILS_ENV]), skipping assets:precompile."; \
   fi
+# ----- FIN DEL NUEVO BLOQUE (CON DEBUG) -----
 
 # Generate .git_sha file with current commit hash
 RUN git rev-parse HEAD > /app/.git_sha
