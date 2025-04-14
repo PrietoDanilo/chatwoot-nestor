@@ -1,0 +1,14 @@
+# railway.toml (Configuración para Railpack)
+
+# Especifica que estamos usando Railpack (aunque ya esté en la UI, es bueno tenerlo aquí)
+builder = "railpack"
+
+# Configuración de la fase de Build
+[build]
+# Define variables de entorno SÓLO para la fase de build
+[build.variables]
+RAILS_ENV = "production"
+SECRET_KEY_BASE = "dummy_secret_key_base_for_build_only" # Clave temporal para build
+RAILS_LOG_TO_STDOUT = "enabled"
+# DATABASE_URL Falsa para evitar conexiones durante el build
+# ¡IMPORTANTE!a (Usando Railpack):**
